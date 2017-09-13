@@ -69,6 +69,6 @@ namespace WebApplication1.DataAccess
     {
         List<T> GetAll();
         bool InactivateCustomer(int entityToUpdate);
-        void Update(T customer);
+        void Update(T entityToUpdate);
     }
 }
