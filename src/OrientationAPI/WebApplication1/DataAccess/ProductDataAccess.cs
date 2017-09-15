@@ -39,9 +39,18 @@ namespace WebApplication1.DataAccess
             throw new NotImplementedException();
         }
 
-        public bool MarkOutOfStock(int entityToUpdate)
+        public void MarkOutOfStock(int entityToUpdate)
         {
-            throw new NotImplementedException();
+
+            using (var connection =
+                    new SqlConnection(ConfigurationManager.ConnectionStrings["Bangazon"].ConnectionString))
+            {
+                connection.Open();
+
+                var result = connection.ExecuteScalar<ProductListResult>
+                                              ("update Product set OutOfStock = NOT OutOfStock");
+
+            }
         }
     }
     public interface IProductRepository<T>
@@ -49,6 +58,6 @@ namespace WebApplication1.DataAccess
         List<T> GetAllProducts();
         List<T> CreateProduct();
         List<T> DeleteProduct();
-        bool MarkOutOfStock(int entityToUpdate);
+        void MarkOutOfStock(int entityToUpdate);
     }
 }

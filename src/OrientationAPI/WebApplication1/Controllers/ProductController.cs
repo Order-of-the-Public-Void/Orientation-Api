@@ -41,10 +41,22 @@ namespace WebApplication1.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpDelete, Route("")]
+        [HttpDelete, Route("outofstock")]
         public HttpResponseMessage Delete()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var productData = new ProductDataAccess();
+                var markProduct = productData.MarkOutOfStock();
+
+                return Request.CreateResponse(HttpStatusCode.OK, markProduct);
+            }
+            catch(Exception)
+            {
+
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Query didn't work ...");
+
+            }
         }
     }
 }
