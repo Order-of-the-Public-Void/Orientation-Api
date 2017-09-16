@@ -65,13 +65,6 @@ namespace WebApplication1.DataAccess
 
         public bool CheckStock(int id)
         {
-            throw new NotImplementedException();
-        }
-    }
-    public interface IProductRepository<T>
-    { 
-        public bool CheckStock(int id)
-        {
         using (var connection =
         new SqlConnection(ConfigurationManager.ConnectionStrings["Bangazon"].ConnectionString))
         {
