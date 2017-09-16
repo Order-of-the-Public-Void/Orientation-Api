@@ -4,6 +4,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using WebApplication1.DataAccess;
+using WebApplication1.Models;
+using Dapper;
 
 namespace WebApplication1.Controllers
 {
@@ -13,7 +16,17 @@ namespace WebApplication1.Controllers
         [HttpGet, Route("unpaid")]
         public HttpResponseMessage GetUnPaid()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var orderData = new OrderDataAccess();
+                var orders = orderData.ListUnpaid();
+
+                return Request.CreateResponse(HttpStatusCode.OK, orders);
+            }
+            catch (Exception)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Query didn't work ...");
+            }
         }
 
         [HttpPost, Route("create")]
@@ -22,10 +35,27 @@ namespace WebApplication1.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpPut, Route("paid")]
-        public HttpResponseMessage MarkPaid()
+        [HttpPut, Route("paid/{id}")]
+        public HttpResponseMessage MarkPaid(int id, OrderDetails order)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var orderData = new OrderDataAccess();
+                var affectedRows = orderData.UpdatePaid(id, order);
+
+                if (affectedRows == 0)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound,
+                                   $"Order not found");
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK, $"{affectedRows} rows updated");
+
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+            }
         }
     }
 }

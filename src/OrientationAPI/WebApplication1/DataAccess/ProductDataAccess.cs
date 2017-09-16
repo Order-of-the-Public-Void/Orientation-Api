@@ -16,7 +16,6 @@ namespace WebApplication1.DataAccess
     {
         public List<ProductListResult> GetAllProducts()
         {
-
             using (var connection =
                     new SqlConnection(ConfigurationManager.ConnectionStrings["Bangazon"].ConnectionString))
             {

@@ -1,11 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using Dapper;
+using WebApplication1.Models;
 
 namespace WebApplication1.DataAccess
 {
-    public class OrderDataAccess : IOrdersRepository<OrderDataAccess>
+    public class OrderDataAccess : IOrdersRepository<OrderDetails>
     {
 
         //placeanorder
@@ -14,16 +21,42 @@ namespace WebApplication1.DataAccess
             throw new NotImplementedException();
         }
 
-        //payforanorder
-        public void Update()
+        //pay for an order
+        public int UpdatePaid(int id, OrderDetails order)
         {
-            throw new NotImplementedException();
+            using (var connection =
+                    new SqlConnection(ConfigurationManager.ConnectionStrings["Bangazon"].ConnectionString))
+            {
+                connection.Open();
+
+                var affectedRows = connection.Execute
+                                              ("update Orders " +
+                                               "set Paid = 1 " +
+                                               "where EmployeeId = @employeeId",
+                                               new
+                                               {
+                                                   employeeId = id
+                                               });
+
+                return affectedRows;
+
+            }
         }
 
         //listordersunpaidorders
-        public List<OrderDataAccess> ListUnPaid()
+        public List<OrderDetails> ListUnpaid()
         {
-            throw new NotImplementedException();
+            using (var connection =
+                    new SqlConnection(ConfigurationManager.ConnectionStrings["Bangazon"].ConnectionString))
+            {
+                connection.Open();
+
+                var result = connection.Query<OrderDetails>("select * " +
+                                                            "from Order " +
+                                                            "where Paid = false");
+
+                return result.ToList();
+            }
         }
         
     }
@@ -31,7 +64,7 @@ namespace WebApplication1.DataAccess
     public interface IOrdersRepository<T>
     {
         void Add();
-        void Update();
-        List<T> ListUnPaid();
+        int UpdatePaid(int id, T entityToUpdate);
+        List<T> ListUnpaid();
     }
 }
