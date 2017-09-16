@@ -11,5 +11,6 @@ namespace WebApplication1.Models
         public string ProductName { get; set; }
         public string ProductDescription { get; set; }
         public double ProductPrice { get; set; }
+        public bool OutOfStock { get; set; } = false;
     }
 }

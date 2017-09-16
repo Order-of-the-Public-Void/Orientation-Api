@@ -1,9 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Dapper;
+using System.Data.SqlClient;
+using WebApplication1.DataAccess;
+using WebApplication1.Models;
+using WebApplication1.DataAccess;
+using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
@@ -13,7 +21,17 @@ namespace WebApplication1.Controllers
         [HttpGet, Route("all")]
         public HttpResponseMessage Get()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var productData = new ProductDataAccess();
+                var products = productData.GetAllProducts();
+
+                return Request.CreateResponse(HttpStatusCode.OK, products);
+            }
+            catch (Exception)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Query didn't work ...");
+            }
         }
 
         [HttpPut, Route("")]
@@ -22,16 +40,49 @@ namespace WebApplication1.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpPost, Route("")]
-        public HttpResponseMessage Post()
+        [HttpPost, Route("add")]
+        public HttpResponseMessage Post(ProductListResult product)
         {
-            throw new NotImplementedException();
+            using (var connection =
+                new SqlConnection(ConfigurationManager.ConnectionStrings["Bangazon"].ConnectionString))
+            {
+                try
+                {
+                    var productData = new ProductDataAccess();
+                    productData.Add(product);
+                    return Request.CreateResponse(HttpStatusCode.Accepted);
+                }
+                catch (Exception ex)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+                }
+            }
         }
 
         [HttpDelete, Route("")]
         public HttpResponseMessage Delete()
         {
             throw new NotImplementedException();
+        }
+        [HttpGet, Route("status/{id}")]
+        public HttpResponseMessage GetProductStatus(int id)
+        {
+            using (var connection =
+                new SqlConnection(ConfigurationManager.ConnectionStrings["Bangazon"].ConnectionString))
+            {
+                try
+                {
+
+                    var ProductData = new ProductDataAccess();
+                    var ProductStatus = ProductData.CheckStock(id);
+
+                    return Request.CreateResponse(HttpStatusCode.OK, ProductStatus);
+                }
+                catch (Exception ex)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+                }
+            }
         }
     }
 }
