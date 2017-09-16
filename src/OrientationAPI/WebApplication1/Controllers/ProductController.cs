@@ -41,15 +41,15 @@ namespace WebApplication1.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpDelete, Route("outofstock")]
-        public HttpResponseMessage Delete()
+        [HttpPut, Route("outofstock")]
+        public HttpResponseMessage MarkOutOfStock()
         {
             try
             {
                 var productData = new ProductDataAccess();
-                var markProduct = productData.MarkOutOfStock();
+                productData.MarkOutOfStock();
 
-                return Request.CreateResponse(HttpStatusCode.OK, markProduct);
+                return Request.CreateResponse(HttpStatusCode.OK);
             }
             catch(Exception)
             {
