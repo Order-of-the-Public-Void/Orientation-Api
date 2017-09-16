@@ -12,18 +12,22 @@
 USE [Bangazon]
 GO
 
-/****** Object:  Table [dbo].[Orders]    Script Date: 9/12/2017 8:21:32 PM ******/
+/****** Object:  Table [dbo].[Order]    Script Date: 9/14/2017 9:22:26 PM ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [dbo].[Orders](
-	[OrderId] [int] NOT NULL,
+CREATE TABLE [dbo].[Order](
+	[OrderId] [int] IDENTITY(1,1) NOT NULL,
 	[OrderTotal] [money] NOT NULL,
 	[Paid] [bit] NOT NULL,
-	[CustomerId] [int] NOT NULL
+	[CustomerId] [int] NOT NULL,
+ CONSTRAINT [PK_Order] PRIMARY KEY CLUSTERED 
+(
+	[OrderId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
 
