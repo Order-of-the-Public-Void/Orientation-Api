@@ -6,9 +6,14 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+
+using Dapper;
+using System.Data.SqlClient;
 using WebApplication1.DataAccess;
 using WebApplication1.Models;
-using Dapper;
+using WebApplication1.DataAccess;
+using WebApplication1.Models;
+
 
 
 namespace WebApplication1.Controllers
@@ -38,10 +43,23 @@ namespace WebApplication1.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpPost, Route("")]
-        public HttpResponseMessage Post()
+        [HttpPost, Route("add")]
+        public HttpResponseMessage Post(ProductListResult product)
         {
-            throw new NotImplementedException();
+            using (var connection =
+                new SqlConnection(ConfigurationManager.ConnectionStrings["Bangazon"].ConnectionString))
+            {
+                try
+                {
+                    var productData = new ProductDataAccess();
+                    productData.Add(product);
+                    return Request.CreateResponse(HttpStatusCode.Accepted);
+                }
+                catch (Exception ex)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+                }
+            }
         }
 
         [HttpDelete, Route("")]
@@ -49,25 +67,27 @@ namespace WebApplication1.Controllers
         {
             throw new NotImplementedException();
         }
-		[HttpGet, Route("status/{id}")]
-		public HttpResponseMessage GetProductStatus(int id)
-		{
-			using (var connection =
-				new SqlConnection(ConfigurationManager.ConnectionStrings["Bangazon"].ConnectionString))
-			{
-				try
-				{
 
-					var ProductData = new ProductDataAccess();
-					var ProductStatus = ProductData.CheckStock(id);
-					
-					return Request.CreateResponse(HttpStatusCode.OK, ProductStatus);
-				}
-				catch (Exception ex)
-				{
-					return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
-				}
-			}
-		}
-	}
+        [HttpGet, Route("status/{id}")]
+        public HttpResponseMessage GetProductStatus(int id)
+        {
+            using (var connection =
+                new SqlConnection(ConfigurationManager.ConnectionStrings["Bangazon"].ConnectionString))
+            {
+                try
+                {
+
+                    var ProductData = new ProductDataAccess();
+                    var ProductStatus = ProductData.CheckStock(id);
+
+                    return Request.CreateResponse(HttpStatusCode.OK, ProductStatus);
+                }
+                catch (Exception ex)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+                }
+            }
+        }
+    }
 }
+

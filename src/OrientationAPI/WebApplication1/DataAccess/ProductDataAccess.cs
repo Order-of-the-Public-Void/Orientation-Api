@@ -29,9 +29,22 @@ namespace WebApplication1.DataAccess
             }
         }
 
-        public List<ProductListResult> CreateProduct()
+        public void Add(ProductListResult product)
         {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Bangazon"].ConnectionString))
+            {
+                connection.Open();
+
+                var result = connection.QueryFirstOrDefault<ProductListResult>(
+                    "INSERT into Product (ProductName, ProductDescription, ProductPrice)" +
+                    "Values(@ProductName, @ProductDescription, @ProductPrice)",
+                    new
+                    {
+                        ProductName = product.ProductName,
+                        ProductDescription = product.ProductDescription,
+                        ProductPrice = product.ProductPrice,
+                    });
+            }
         }
 
         public List<ProductListResult> DeleteProduct()
@@ -43,25 +56,34 @@ namespace WebApplication1.DataAccess
         {
             throw new NotImplementedException();
         }
-		public bool CheckStock(int id)
-		{
-			using (var connection =
-			new SqlConnection(ConfigurationManager.ConnectionStrings["Bangazon"].ConnectionString))
-			{
-				connection.Open();
 
-				var result = connection.QueryFirstOrDefault<bool>("Select OutOfStock From Product where ProductId = @id", new { id = id });
 
-				return result;
-			}
-		}
+
+        public List<ProductListResult> CreateProduct()
+        {
+            throw new NotImplementedException();
+        }
+
+       public bool CheckStock(int id)
+		   {
+			    using (var connection =
+			    new SqlConnection(ConfigurationManager.ConnectionStrings["Bangazon"].ConnectionString))
+			    {
+				  connection.Open();
+
+				  var result = connection.QueryFirstOrDefault<bool>("Select OutOfStock From Product where ProductId = @id", new { id = id });
+
+				  return result;
+			  }
+		 }
 	}
-    public interface IProductRepository<T>
-    {
-        List<T> GetAllProducts();
-        List<T> CreateProduct();
-        List<T> DeleteProduct();
-        bool MarkOutOfStock(int entityToUpdate);
-		bool CheckStock(int id);
-    }
+  public interface IProductRepository<T>
+  {
+    List<T> GetAllProducts();
+    List<T> CreateProduct();
+    List<T> DeleteProduct();
+    bool MarkOutOfStock(int entityToUpdate);
+    bool CheckStock(int id);
+  }
 }
+
