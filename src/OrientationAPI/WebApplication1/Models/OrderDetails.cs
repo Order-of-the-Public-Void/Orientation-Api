@@ -11,6 +11,7 @@ namespace WebApplication1.Models
         public double OrderTotal { get; set; }
         public bool Paid { get; set; }
         public int CustomerId { get; set; }
+        public int ProductId { get; set }
     }
 
     public class LineItems

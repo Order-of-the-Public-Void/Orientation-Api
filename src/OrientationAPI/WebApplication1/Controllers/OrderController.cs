@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using WebApplication1.DataAccess;
+using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
@@ -18,19 +19,17 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost, Route("placeOrder")]
-        public HttpResponseMessage PlaceOrder()
+        public HttpResponseMessage PlaceOrder(OrderDetails orderDetails)
         {          
             try
             {
-                var newOrder = new OrderDataAccess.PlaceAnOrder();
-                return Request.CreateResponse(HttpStatusCode.Created, newOrder);
+                var newOrder = new OrderDataAccess().PlaceAnOrder(orderDetails);
 
-                var isAvail = new ProductDataAccess.GetProductStatus(id);
-                return Request.CreateResponse(HttpStatusCode.Found, isAvail);
+                var isAvail = new ProductDataAccess().CheckStock(orderDetsils.ProductId);
 
                 if (isAvail)
                 {
-                    var insertLineItem = new OrderDataAccess.InsertLineItem(newOrder);
+                    var insertLineItem = new OrderDataAccess().InsertLineItem(newOrder);
                     return Request.CreateResponse(HttpStatusCode.Created, insertLineItem);
                 }
                 else

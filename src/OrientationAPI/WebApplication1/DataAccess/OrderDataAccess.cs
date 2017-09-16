@@ -36,19 +36,16 @@ namespace WebApplication1.DataAccess
         }
 
         //listordersunpaidorders
-        public List<T> ListUnPaid()
+        public List<OrderDetails> ListUnPaid()
         {
             throw new NotImplementedException();
         }
 
         //insert LineItems
-        public int InsertLineItem(ProductListResult entityToInsert)
+        public int InsertLineItem(OrderDetails entityToInsert)
         {
-            //var isAvail = true;//new ProductDataAccess.GetProductStatus(productId);
 
-            //if (isAvail)
-            //{
-            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Bangazon"].ConnectionString))
+                using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Bangazon"].ConnectionString))
             {
                 connection.Open();
 
@@ -56,14 +53,14 @@ namespace WebApplication1.DataAccess
                 "Values(entityToInsert, @ProductId, @Quantity)",
                 new
                 {
-                    OrderId = entityToInsert,
-                    productId = @ProductId,
+                    OrderId = entityToInsert.OrderId,
+                    productId = entityToInsert.ProductId,
                     Quantity = @Quantity
                 });
 
                 return newLineItem;
             }
-            //}
+
         }
 
     }
@@ -73,6 +70,6 @@ namespace WebApplication1.DataAccess
         int PlaceAnOrder(T entityToInsert);
         void Update();
         List<T> ListUnPaid();
-        int InsertLineItem(ProductListResult entityToInsert);
+        int InsertLineItem(OrderDetails entityToInsert);
     }
 }
