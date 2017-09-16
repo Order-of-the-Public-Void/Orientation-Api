@@ -6,12 +6,15 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+
 using Dapper;
 using System.Data.SqlClient;
 using WebApplication1.DataAccess;
 using WebApplication1.Models;
 using WebApplication1.DataAccess;
 using WebApplication1.Models;
+
+
 
 namespace WebApplication1.Controllers
 {
@@ -64,6 +67,7 @@ namespace WebApplication1.Controllers
         {
             throw new NotImplementedException();
         }
+
         [HttpGet, Route("status/{id}")]
         public HttpResponseMessage GetProductStatus(int id)
         {
@@ -86,3 +90,4 @@ namespace WebApplication1.Controllers
         }
     }
 }
+

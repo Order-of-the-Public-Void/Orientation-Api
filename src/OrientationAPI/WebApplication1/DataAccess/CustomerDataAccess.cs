@@ -13,8 +13,10 @@ using WebApplication1.Models;
 
 namespace WebApplication1.DataAccess
 {
-     public class CustomerDataAccess : IRepository<CustomerListResult>
-		{
+	
+    public class CustomerDataAccess : IRepository<CustomerListResult>
+    {
+
 
         public List<CustomerListResult> GetAll()
         {
@@ -74,28 +76,35 @@ namespace WebApplication1.DataAccess
 
             }
         }
- 
-        public void Update(CustomerListResult customer)
-			{
-				using (var connection =
-				new SqlConnection(ConfigurationManager.ConnectionStrings["Bangazon"].ConnectionString))
-				{
-					connection.Open();
-					var result = connection.Execute("Update Customer " +
-																	"Set FirstName = @firstname, LastName = @lastname " +
-																	"Where CustomerId = @customerId", new { FirstName = customer.FirstName, LastName = customer.LastName, CustomerId = customer.CustomerId });
-					return;
-				}
-			}
 
+        public void Update(CustomerListResult customer)
+        {
+            using (var connection =
+            new SqlConnection(ConfigurationManager.ConnectionStrings["Bangazon"].ConnectionString))
+            {
+                connection.Open();
+                var result = connection.Execute("Update Customer " +
+                                                                "Set FirstName = @firstname, LastName = @lastname " +
+                                                                "Where CustomerId = @customerId", new { FirstName = customer.FirstName, LastName = customer.LastName, CustomerId = customer.CustomerId });
+
+                //return;
+
+                return;
+
+            }
         }
+
+    }
 
 
     public interface IRepository<T>
     {
         List<T> GetAll();
         void Update(T customer);
-	void Add(T customer);
+	    void Add(T customer);
         bool InactivateCustomer(int entityToUpdate);
-	}
+
+    }
 }
+
+
