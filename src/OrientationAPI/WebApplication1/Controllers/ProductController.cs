@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -7,6 +9,7 @@ using System.Web.Http;
 using WebApplication1.DataAccess;
 using WebApplication1.Models;
 using Dapper;
+
 
 namespace WebApplication1.Controllers
 {
@@ -42,12 +45,12 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPut, Route("outofstock")]
-        public HttpResponseMessage MarkOutOfStock()
+        public HttpResponseMessage MarkOutOfStock(ProductListResult product)
         {
             try
             {
                 var productData = new ProductDataAccess();
-                productData.MarkOutOfStock();
+                productData.MarkOutOfStock(product);
 
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
@@ -58,5 +61,25 @@ namespace WebApplication1.Controllers
 
             }
         }
-    }
+		[HttpGet, Route("status/{id}")]
+		public HttpResponseMessage GetProductStatus(int id)
+		{
+			using (var connection =
+				new SqlConnection(ConfigurationManager.ConnectionStrings["Bangazon"].ConnectionString))
+			{
+				try
+				{
+
+					var ProductData = new ProductDataAccess();
+					var ProductStatus = ProductData.CheckStock(id);
+					
+					return Request.CreateResponse(HttpStatusCode.OK, ProductStatus);
+				}
+				catch (Exception ex)
+				{
+					return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+				}
+			}
+		}
+	}
 }

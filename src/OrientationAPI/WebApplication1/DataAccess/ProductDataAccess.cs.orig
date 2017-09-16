@@ -39,7 +39,7 @@ namespace WebApplication1.DataAccess
             throw new NotImplementedException();
         }
 
-        public void MarkOutOfStock(ProductListResult entityToUpdate)
+        public void MarkOutOfStock(int entityToUpdate)
         {
 
             using (var connection =
@@ -70,7 +70,11 @@ namespace WebApplication1.DataAccess
         List<T> GetAllProducts();
         List<T> CreateProduct();
         List<T> DeleteProduct();
-        void MarkOutOfStock(ProductListResult entityToUpdate);
+<<<<<<< HEAD
+        void MarkOutOfStock(int entityToUpdate);
+=======
+        bool MarkOutOfStock(int entityToUpdate);
 		bool CheckStock(int id);
+>>>>>>> 9dec5295540640c036c72626bd9f20bc7d768672
     }
 }
