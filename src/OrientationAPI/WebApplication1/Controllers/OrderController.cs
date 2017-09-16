@@ -18,30 +18,31 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost, Route("placeOrder")]
-        //public HttpResponseMessage PlaceOrder()
-        //{          
-            //try
-            //{
-            //    var newOrder = new OrderDataAccess.PlaceAnOrder();
-            //    return Request.CreateResponse(HttpStatusCode.Created, newOrder);
+        public HttpResponseMessage PlaceOrder()
+        {          
+            try
+            {
+                var newOrder = new OrderDataAccess.PlaceAnOrder();
+                return Request.CreateResponse(HttpStatusCode.Created, newOrder);
 
-            //    var isAvail = new ProductDataAccess.GetProductStatus(id);
-            //    return Request.CreateResponse(HttpStatusCode.Found, isAvail);
+                var isAvail = new ProductDataAccess.GetProductStatus(id);
+                return Request.CreateResponse(HttpStatusCode.Found, isAvail);
 
-            //    if (isAvail)
-            //    {
-            //        var insertLineItem = new OrderDataAccess.InsertLineItem(newOrder);
-            //        return Request.CreateResponse(HttpStatusCode.Created, insertLineItem);
-            //    }
-                
-            //}
-            //catch (Exception)
-            //{
-            //    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Query didn't work ...");
-            //}
+                if (isAvail)
+                {
+                    var insertLineItem = new OrderDataAccess.InsertLineItem(newOrder);
+                    return Request.CreateResponse(HttpStatusCode.Created, insertLineItem);
+                }
+                else
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Item not available...");
+            }
+            catch (Exception)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Order not created ...");
+            }
 
 
-        //}
+        }
 
         [HttpPut, Route("paid")]
         public HttpResponseMessage MarkPaid()

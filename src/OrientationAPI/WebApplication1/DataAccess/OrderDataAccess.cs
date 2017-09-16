@@ -53,13 +53,15 @@ namespace WebApplication1.DataAccess
                 connection.Open();
 
                 var newLineItem = connection.ExecuteScalar("Insert into LineItem (OrderId, ProductId, Quantity)" +
-                "Values(@OrderId, @ProductId, @Quantity)",
+                "Values(entityToInsert, @ProductId, @Quantity)",
                 new
                 {
-                    OrderId = newOrder,
-                    productId = newLineItem.productId,
-                    Quantity = newLineItem.Quantity
+                    OrderId = entityToInsert,
+                    productId = @ProductId,
+                    Quantity = @Quantity
                 });
+
+                return newLineItem;
             }
             //}
         }
