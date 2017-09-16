@@ -13,9 +13,13 @@ using WebApplication1.Models;
 
 namespace WebApplication1.DataAccess
 {
+<<<<<<< HEAD
+=======
 	
+>>>>>>> a5caf058253df2fe3effff2ecc4d2557b420acfc
     public class CustomerDataAccess : IRepository<CustomerListResult>
     {
+
 
         public List<CustomerListResult> GetAll()
         {
@@ -106,3 +110,7 @@ namespace WebApplication1.DataAccess
     }
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> a5caf058253df2fe3effff2ecc4d2557b420acfc
