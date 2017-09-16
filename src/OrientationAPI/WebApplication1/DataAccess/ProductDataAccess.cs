@@ -43,12 +43,25 @@ namespace WebApplication1.DataAccess
         {
             throw new NotImplementedException();
         }
-    }
+		public bool CheckStock(int id)
+		{
+			using (var connection =
+			new SqlConnection(ConfigurationManager.ConnectionStrings["Bangazon"].ConnectionString))
+			{
+				connection.Open();
+
+				var result = connection.QueryFirstOrDefault<bool>("Select OutOfStock From Product where ProductId = @id", new { id = id });
+
+				return result;
+			}
+		}
+	}
     public interface IProductRepository<T>
     {
         List<T> GetAllProducts();
         List<T> CreateProduct();
         List<T> DeleteProduct();
         bool MarkOutOfStock(int entityToUpdate);
+		bool CheckStock(int id);
     }
 }
