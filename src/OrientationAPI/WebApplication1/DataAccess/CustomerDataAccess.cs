@@ -13,8 +13,8 @@ using WebApplication1.Models;
 
 namespace WebApplication1.DataAccess
 {
-    public class CustomerDataAccess : IRepository<CustomerListResult>
-    {
+     public class CustomerDataAccess : IRepository<CustomerListResult>
+	 {
 
         public List<CustomerListResult> GetAll()
         {
