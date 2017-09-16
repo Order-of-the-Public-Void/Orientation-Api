@@ -32,32 +32,49 @@ namespace WebApplication1.Controllers
 		        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Query didn't work ...");
             }
         }
-        [HttpPost, Route("add")]
-        public HttpResponseMessage Post(CustomerListResult customer)
+		[HttpPost, Route("add")]
+		public HttpResponseMessage Post(CustomerListResult customer)
+		{
+			using (var connection =
+				new SqlConnection(ConfigurationManager.ConnectionStrings["Bangazon"].ConnectionString))
+			{
+				try
+				{
+					var customerData = new CustomerDataAccess();
+					customerData.Add(customer);
+					return Request.CreateResponse(HttpStatusCode.Accepted);
 
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Query didn't work ...");
-            }
-        }
+				}
+				catch (Exception ex)
+				{
+					return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+
+				}
+			}
+		}
+		
+
         [HttpPut, Route("edit")]
-        public HttpResponseMessage Put(CustomerListResult customer)
+		public HttpResponseMessage Put(CustomerListResult customer)
+		{
+			using (var connection =
+				new SqlConnection(ConfigurationManager.ConnectionStrings["Bangazon"].ConnectionString))
+			{
+				try
+				{
+					var customerData = new CustomerDataAccess();
+					customerData.Update(customer);
+					return Request.CreateResponse(HttpStatusCode.Accepted);
 
-        {
-            using (var connection =
-                new SqlConnection(ConfigurationManager.ConnectionStrings["Bangazon"].ConnectionString))
-            {
-                try
-                {
-                    var customerData = new CustomerDataAccess();
+				}
+				catch (Exception ex)
+				{
+					return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
 
+				}
+			}
+		}
 
-                }
-                catch (Exception ex)
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
-
-                }
-            }
-        }
         // PUT api/values/5
         [HttpPut, Route("{id}")]
         public HttpResponseMessage InactivateCustomer(int id)
