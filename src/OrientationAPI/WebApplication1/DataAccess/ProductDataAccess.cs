@@ -48,7 +48,7 @@ namespace WebApplication1.DataAccess
                 connection.Open();
 
                 var result = connection.ExecuteScalar<ProductListResult>
-                                              ("update Product set OutOfStock = NOT OutOfStock");
+                                              ("update Product set OutOfStock = ~OutOfStock where Product.ProductId = @productId", new { ProductId = entityToUpdate.ProductId});
 
             }
         }
