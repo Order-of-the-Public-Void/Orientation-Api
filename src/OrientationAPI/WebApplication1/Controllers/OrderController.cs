@@ -16,8 +16,8 @@ namespace WebApplication1.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpPost, Route("create")]
-        public HttpResponseMessage CreateOrder()
+        [HttpPost, Route("placeOrder")]
+        public HttpResponseMessage PlaceOrder()
         {
             throw new NotImplementedException();
         }

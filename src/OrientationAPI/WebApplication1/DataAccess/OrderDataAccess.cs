@@ -9,7 +9,7 @@ namespace WebApplication1.DataAccess
     {
 
         //placeanorder
-        public void Add()
+        public void PlaceAnOrder()
         {
             throw new NotImplementedException();
         }
@@ -30,7 +30,7 @@ namespace WebApplication1.DataAccess
 
     public interface IOrdersRepository<T>
     {
-        void Add();
+        void PlaceAnOrder();
         void Update();
         List<T> ListUnPaid();
     }
