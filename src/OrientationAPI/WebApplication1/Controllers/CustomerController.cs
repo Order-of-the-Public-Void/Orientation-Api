@@ -28,11 +28,19 @@ namespace WebApplication1.Controllers
             }
             catch (Exception)
             {
+
+		        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Query didn't work ...");
+            }
+        }
+        [HttpPost, Route("add")]
+        public HttpResponseMessage Post(CustomerListResult customer)
+
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Query didn't work ...");
             }
         }
         [HttpPut, Route("edit")]
         public HttpResponseMessage Put(CustomerListResult customer)
+
         {
             using (var connection =
                 new SqlConnection(ConfigurationManager.ConnectionStrings["Bangazon"].ConnectionString))
@@ -40,8 +48,7 @@ namespace WebApplication1.Controllers
                 try
                 {
                     var customerData = new CustomerDataAccess();
-                    customerData.Update(customer);
-                    return Request.CreateResponse(HttpStatusCode.Accepted);
+
 
                 }
                 catch (Exception ex)

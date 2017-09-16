@@ -13,8 +13,13 @@ using WebApplication1.Models;
 
 namespace WebApplication1.DataAccess
 {
+
+     public class CustomerDataAccess : IRepository<CustomerListResult>
+	 {
+
     public class CustomerDataAccess : IRepository<CustomerListResult>
     {
+
 
         public List<CustomerListResult> GetAll()
         {
@@ -32,6 +37,31 @@ namespace WebApplication1.DataAccess
             }
         }
 
+        public void Add(CustomerListResult customer)
+        {
+            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Bangazon"].ConnectionString))
+            {
+                connection.Open();
+
+                var result = connection.QueryFirstOrDefault<CustomerListResult>(
+                    "INSERT into Customer (FirstName,LastName,Active,PhoneNumber,EmailAddress,Address1,Address2,City,State,ZipCode)" +
+                    "Values(@Firstname,@LastName,@Active,@PhoneNumber,@EmailAddress,@Address1,@Address2,@City,@State,@ZipCode)",
+                    new
+                    {
+                        FirstName = customer.FirstName,
+                        LastName = customer.LastName,
+                        Active = customer.Active,
+                        PhoneNumber = customer.PhoneNumber,
+                        EmailAddress = customer.EmailAddress,
+                        Address1 = customer.Address1,
+                        Address2 = customer.Address2,
+                        City = customer.City,
+                        State = customer.State,
+                        ZipCode = customer.ZipCode
+                    });
+
+            }
+        }
         public bool InactivateCustomer(int entitytoUpdate)
         {
             var newStatus = 0;
@@ -59,16 +89,28 @@ namespace WebApplication1.DataAccess
                 var result = connection.Execute("Update Customer " +
                                                                 "Set FirstName = @firstname, LastName = @lastname " +
                                                                 "Where CustomerId = @customerId", new { FirstName = customer.FirstName, LastName = customer.LastName, CustomerId = customer.CustomerId });
+
+                //return;
+
                 return;
+
             }
         }
 
     }
 
+
     public interface IRepository<T>
     {
         List<T> GetAll();
+        void Update(T customer);
+	    void Add(T customer);
         bool InactivateCustomer(int entityToUpdate);
+
+    }
+}
+
         void Update(T entityToUpdate);
     }
 }
+
