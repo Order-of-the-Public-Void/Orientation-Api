@@ -32,8 +32,35 @@ namespace WebApplication1.Controllers
 		        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Query didn't work ...");
             }
         }
-		[HttpPost, Route("add")]
-		public HttpResponseMessage Post(CustomerListResult customer)
+        [HttpPost, Route("add")]
+        public HttpResponseMessage Post(CustomerListResult customer)
+
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Query didn't work ...");
+            }
+        }
+        [HttpPut, Route("edit")]
+        public HttpResponseMessage Put(CustomerListResult customer)
+
+        {
+            using (var connection =
+                new SqlConnection(ConfigurationManager.ConnectionStrings["Bangazon"].ConnectionString))
+            {
+                try
+                {
+                    var customerData = new CustomerDataAccess();
+
+
+                }
+                catch (Exception ex)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+
+                }
+            }
+        }
+<<<<<<< HEAD
+        [HttpPut, Route("edit")]
+		public HttpResponseMessage Put(CustomerListResult customer)
 		{
 			using (var connection =
 				new SqlConnection(ConfigurationManager.ConnectionStrings["Bangazon"].ConnectionString))
@@ -41,7 +68,7 @@ namespace WebApplication1.Controllers
 				try
 				{
 					var customerData = new CustomerDataAccess();
-					customerData.Add(customer);
+					customerData.Update(customer) ;
 					return Request.CreateResponse(HttpStatusCode.Accepted);
 
 				}
@@ -52,8 +79,7 @@ namespace WebApplication1.Controllers
 				}
 			}
 		}
-		
-
+||||||| merged common ancestors
         [HttpPut, Route("edit")]
 		public HttpResponseMessage Put(CustomerListResult customer)
 		{
@@ -74,7 +100,8 @@ namespace WebApplication1.Controllers
 				}
 			}
 		}
-
+=======
+>>>>>>> Sprint-2
         // PUT api/values/5
         [HttpPut, Route("{id}")]
         public HttpResponseMessage InactivateCustomer(int id)
