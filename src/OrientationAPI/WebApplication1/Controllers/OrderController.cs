@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using WebApplication1.DataAccess;
 
 namespace WebApplication1.Controllers
 {
@@ -17,10 +18,30 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost, Route("placeOrder")]
-        public HttpResponseMessage PlaceOrder()
-        {
-            throw new NotImplementedException();
-        }
+        //public HttpResponseMessage PlaceOrder()
+        //{          
+            //try
+            //{
+            //    var newOrder = new OrderDataAccess.PlaceAnOrder();
+            //    return Request.CreateResponse(HttpStatusCode.Created, newOrder);
+
+            //    var isAvail = new ProductDataAccess.GetProductStatus(id);
+            //    return Request.CreateResponse(HttpStatusCode.Found, isAvail);
+
+            //    if (isAvail)
+            //    {
+            //        var insertLineItem = new OrderDataAccess.InsertLineItem(newOrder);
+            //        return Request.CreateResponse(HttpStatusCode.Created, insertLineItem);
+            //    }
+                
+            //}
+            //catch (Exception)
+            //{
+            //    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Query didn't work ...");
+            //}
+
+
+        //}
 
         [HttpPut, Route("paid")]
         public HttpResponseMessage MarkPaid()
