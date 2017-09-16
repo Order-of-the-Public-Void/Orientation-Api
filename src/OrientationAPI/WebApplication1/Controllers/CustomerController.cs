@@ -28,11 +28,19 @@ namespace WebApplication1.Controllers
             }
             catch (Exception)
             {
+
 		        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Query didn't work ...");
             }
         }
         [HttpPost, Route("add")]
         public HttpResponseMessage Post(CustomerListResult customer)
+
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Query didn't work ...");
+            }
+        }
+        [HttpPut, Route("edit")]
+        public HttpResponseMessage Put(CustomerListResult customer)
+
         {
             using (var connection =
                 new SqlConnection(ConfigurationManager.ConnectionStrings["Bangazon"].ConnectionString))
@@ -40,8 +48,7 @@ namespace WebApplication1.Controllers
                 try
                 {
                     var customerData = new CustomerDataAccess();
-                    customerData.Add(customer);
-                    return Request.CreateResponse(HttpStatusCode.Accepted);
+
 
                 }
                 catch (Exception ex)
@@ -51,34 +58,14 @@ namespace WebApplication1.Controllers
                 }
             }
         }
-        [HttpPut, Route("edit")]
-		public HttpResponseMessage Put(CustomerListResult customer)
-		{
-			using (var connection =
-				new SqlConnection(ConfigurationManager.ConnectionStrings["Bangazon"].ConnectionString))
-			{
-				try
-				{
-					var customerData = new CustomerDataAccess();
-					customerData.Update(customer);
-					return Request.CreateResponse(HttpStatusCode.Accepted);
-
-				}
-				catch (Exception ex)
-				{
-					return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
-
-				}
-			}
-		}
         // PUT api/values/5
         [HttpPut, Route("{id}")]
         public HttpResponseMessage InactivateCustomer(int id)
         {
             var customerDataAccess = new CustomerDataAccess();
             var MakeInactive = customerDataAccess.InactivateCustomer(id);
-           
-            if(MakeInactive)
+
+            if (MakeInactive)
                 return Request.CreateResponse(HttpStatusCode.OK);
             else
                 return Request.CreateResponse(HttpStatusCode.InternalServerError);
